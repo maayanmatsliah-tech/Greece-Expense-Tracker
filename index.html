@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Savings Made Simple</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2, h3 { color: #333; }
+        input[type="number"] { width: 150px; margin: 5px; padding: 3px; }
+        input[type="submit"] { margin: 10px 0; padding: 5px 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 3px 0; }
+        .green { color: green; font-weight: bold; }
+        .red { color: red; font-weight: bold; }
+        .summary-box { border: 1px solid #ccc; padding: 10px; margin: 15px 0; }
+        img { max-width: 600px; display: block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<h1>Savings Made Simple</h1>
+{% if not starting_money or not finishing_money %}
+    <!-- Setup Form -->
+    <h2>Setup Your Savings Goal</h2>
+    <form method="POST">
+        <label>Starting Money ($):</label>
+        <input type="number" name="start" step="0.01" required><br>
+        <label>Money You Want to Save ($):</label>
+        <input type="number" name="finish" step="0.01" required><br>
+        <input type="submit" value="Set Goal">
+    </form>
+{% else %}
+    <!-- Weekly Spending Form -->
+    <h2>Week {{ week_number }} Spending</h2>
+    <form method="POST">
+        <label>Money Spent This Week ($):</label>
+        <input type="number" name="weekly_expense" step="0.01" required>
+        <input type="hidden" name="action" value="submit_week">
+        <input type="submit" value="Submit">
+    </form>
+    <!-- Exit Without Logging -->
+    <form method="POST">
+        <input type="hidden" name="action" value="exit_now">
+        <input type="submit" value="Exit / Log Later">
+    </form>
+    <!-- Start Over Button -->
+    <form method="POST">
+        <input type="hidden" name="action" value="start_over">
+        <input type="submit" value="Start Over / Reset Goal">
+    </form>
+    <!-- Past Weeks -->
+    <h3>Past Weeks</h3>
+    <ul>
+        {% for spent in weekly_spending_list %}
+            <li>Week {{ loop.index }}: ${{ spent }}</li>
+        {% endfor %}
+    </ul>
+    <!-- Summary -->
+    <div class="summary-box">
+        <h3>Summary</h3>
+        <p>Starting Money: ${{ starting_money }}</p>
+        <p>Goal Savings: ${{ finishing_money }}</p>
+        <p>Total Spent: ${{ summary.total_spent }}</p>
+        <p>Money Left: ${{ summary.money_left }}</p>
+        <p>
+            On Track:
+            <span class="{{ 'green' if summary.on_track else 'red' }}">
+                {{ "Yes" if summary.on_track else "No" }}
+            </span>
+        </p>
+    </div>
+    <!-- Statistics -->
+    <div class="summary-box">
+        <h3>Summary Statistics</h3>
+        <p>Average Weekly Spending: <strong>${{ summary.avg_weekly | round(2) }}</strong></p>
+        <p>Required Weekly Average to Meet Goal: <strong>${{ summary.necessary_avg | round(2) }}</strong></p>
+        <p>
+            Adjusted Weekly Spending to Get Back on Track:
+            {% if summary.adjusted_avg %}
+                <strong class="red">${{ summary.adjusted_avg | round(2) }}</strong>
+            {% else %}
+                <strong class="green">Not Needed</strong>
+            {% endif %}
+        </p>
+    </div>
+    <!-- Charts -->
+    {% if bar_chart_img %}
+        <h3>Weekly Spending Bar Chart</h3>
+        <img src="data:image/png;base64,{{ bar_chart_img }}" alt="Weekly Spending Bar Chart">
+    {% endif %}
+    {% if pie_chart_img %}
+        <h3>Spending Pie Chart</h3>
+        <img src="data:image/png;base64,{{ pie_chart_img }}" alt="Spending Pie Chart">
+    {% endif %}
+{% endif %}
+</body>
+</html>
