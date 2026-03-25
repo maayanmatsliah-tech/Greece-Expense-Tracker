@@ -2,95 +2,404 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Savings Made Simple</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1, h2, h3 { color: #333; }
-        input[type="number"] { width: 150px; margin: 5px; padding: 3px; }
-        input[type="submit"] { margin: 10px 0; padding: 5px 10px; }
-        ul { list-style-type: none; padding: 0; }
-        li { padding: 3px 0; }
-        .green { color: green; font-weight: bold; }
-        .red { color: red; font-weight: bold; }
-        .summary-box { border: 1px solid #ccc; padding: 10px; margin: 15px 0; }
-        img { max-width: 600px; display: block; margin-bottom: 20px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0f0f0f;
+            color: #f0f0f0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        header {
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        header p {
+            color: #888;
+            margin-top: 6px;
+            font-size: 0.95rem;
+        }
+
+        /* CARDS */
+        .card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* FORMS */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 6px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #6c63ff;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #6c63ff;
+            color: #fff;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #5a52d5;
+        }
+
+        .btn-secondary {
+            background: #1f1f1f;
+            color: #aaa;
+            border: 1px solid #333;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-secondary:hover {
+            border-color: #555;
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: #ff4d4d;
+            border: 1px solid #ff4d4d33;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-danger:hover {
+            background: #ff4d4d11;
+        }
+
+        /* STAT GRID */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat {
+            background: #111;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* ON TRACK BADGE */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-green {
+            background: #00ff8822;
+            color: #00ff88;
+            border: 1px solid #00ff8844;
+        }
+
+        .badge-red {
+            background: #ff4d4d22;
+            color: #ff4d4d;
+            border: 1px solid #ff4d4d44;
+        }
+
+        /* PAST WEEKS */
+        .week-list {
+            list-style: none;
+        }
+
+        .week-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #222;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .week-list li:last-child {
+            border-bottom: none;
+        }
+
+        .week-label {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* CHARTS */
+        .chart-container img {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        /* DIVIDER */
+        .divider {
+            border: none;
+            border-top: 1px solid #222;
+            margin: 20px 0;
+        }
+
+        /* ON TRACK ROW */
+        .on-track-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .on-track-label {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        /* STATS TABLE */
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+            font-size: 0.9rem;
+        }
+
+        .stats-row:last-child {
+            border-bottom: none;
+        }
+
+        .stats-row-label {
+            color: #888;
+        }
+
+        .stats-row-value {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .text-red { color: #ff4d4d; }
+        .text-green { color: #00ff88; }
     </style>
 </head>
 <body>
-<h1>Savings Made Simple</h1>
-{% if not starting_money or not finishing_money %}
-    <!-- Setup Form -->
-    <h2>Setup Your Savings Goal</h2>
-    <form method="POST">
-        <label>Starting Money ($):</label>
-        <input type="number" name="start" step="0.01" required><br>
-        <label>Money You Want to Save ($):</label>
-        <input type="number" name="finish" step="0.01" required><br>
-        <input type="submit" value="Set Goal">
-    </form>
-{% else %}
-    <!-- Weekly Spending Form -->
-    <h2>Week {{ week_number }} Spending</h2>
-    <form method="POST">
-        <label>Money Spent This Week ($):</label>
-        <input type="number" name="weekly_expense" step="0.01" required>
-        <input type="hidden" name="action" value="submit_week">
-        <input type="submit" value="Submit">
-    </form>
-    <!-- Exit Without Logging -->
-    <form method="POST">
-        <input type="hidden" name="action" value="exit_now">
-        <input type="submit" value="Exit / Log Later">
-    </form>
-    <!-- Start Over Button -->
-    <form method="POST">
-        <input type="hidden" name="action" value="start_over">
-        <input type="submit" value="Start Over / Reset Goal">
-    </form>
-    <!-- Past Weeks -->
-    <h3>Past Weeks</h3>
-    <ul>
-        {% for spent in weekly_spending_list %}
-            <li>Week {{ loop.index }}: ${{ spent }}</li>
-        {% endfor %}
-    </ul>
-    <!-- Summary -->
-    <div class="summary-box">
-        <h3>Summary</h3>
-        <p>Starting Money: ${{ starting_money }}</p>
-        <p>Goal Savings: ${{ finishing_money }}</p>
-        <p>Total Spent: ${{ summary.total_spent }}</p>
-        <p>Money Left: ${{ summary.money_left }}</p>
-        <p>
-            On Track:
-            <span class="{{ 'green' if summary.on_track else 'red' }}">
-                {{ "Yes" if summary.on_track else "No" }}
-            </span>
-        </p>
+<div class="container">
+
+    <header>
+        <h1>Savings Made Simple</h1>
+        <p>Track your weekly spending and stay on top of your savings goal.</p>
+    </header>
+
+    {% if not starting_money or not finishing_money %}
+    <!-- SETUP FORM -->
+    <div class="card">
+        <h2>Setup Your Goal</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label>Starting Budget ($)</label>
+                <input type="number" name="start" step="0.01" placeholder="e.g. 1000" required>
+            </div>
+            <div class="form-group">
+                <label>Amount You Want to Save ($)</label>
+                <input type="number" name="finish" step="0.01" placeholder="e.g. 200" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Set Goal →</button>
+        </form>
     </div>
-    <!-- Statistics -->
-    <div class="summary-box">
-        <h3>Summary Statistics</h3>
-        <p>Average Weekly Spending: <strong>${{ summary.avg_weekly | round(2) }}</strong></p>
-        <p>Required Weekly Average to Meet Goal: <strong>${{ summary.necessary_avg | round(2) }}</strong></p>
-        <p>
-            Adjusted Weekly Spending to Get Back on Track:
-            {% if summary.adjusted_avg %}
-                <strong class="red">${{ summary.adjusted_avg | round(2) }}</strong>
+
+    {% else %}
+    <!-- WEEKLY FORM -->
+    <div class="card">
+        <h2>Week {{ week_number }}</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label>Money Spent This Week ($)</label>
+                <input type="number" name="weekly_expense" step="0.01" placeholder="e.g. 45.00" required>
+            </div>
+            <input type="hidden" name="action" value="submit_week">
+            <button type="submit" class="btn btn-primary">Log Week {{ week_number }} →</button>
+        </form>
+        <form method="POST">
+            <input type="hidden" name="action" value="exit_now">
+            <button type="submit" class="btn btn-secondary">Exit / Log Later</button>
+        </form>
+        <form method="POST">
+            <input type="hidden" name="action" value="start_over">
+            <button type="submit" class="btn btn-danger">Reset Goal</button>
+        </form>
+    </div>
+
+    <!-- SUMMARY STATS -->
+    <div class="card">
+        <h2>Summary</h2>
+        <div class="stat-grid">
+            <div class="stat">
+                <div class="stat-label">Starting Budget</div>
+                <div class="stat-value">${{ starting_money }}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Savings Goal</div>
+                <div class="stat-value">${{ finishing_money }}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Total Spent</div>
+                <div class="stat-value">${{ summary.total_spent }}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Money Left</div>
+                <div class="stat-value">${{ summary.money_left }}</div>
+            </div>
+        </div>
+        <div class="on-track-row">
+            <span class="on-track-label">On Track</span>
+            {% if summary.on_track %}
+                <span class="badge badge-green">✓ Yes</span>
             {% else %}
-                <strong class="green">Not Needed</strong>
+                <span class="badge badge-red">✗ No</span>
             {% endif %}
-        </p>
+        </div>
     </div>
-    <!-- Charts -->
+
+    <!-- STATISTICS -->
+    <div class="card">
+        <h2>Statistics</h2>
+        <div class="stats-row">
+            <span class="stats-row-label">Average Weekly Spending</span>
+            <span class="stats-row-value">${{ summary.avg_weekly | round(2) }}</span>
+        </div>
+        <div class="stats-row">
+            <span class="stats-row-label">Required Weekly Average</span>
+            <span class="stats-row-value">${{ summary.necessary_avg | round(2) }}</span>
+        </div>
+        <div class="stats-row">
+            <span class="stats-row-label">Adjusted Weekly to Get Back on Track</span>
+            {% if summary.adjusted_avg %}
+                <span class="stats-row-value text-red">${{ summary.adjusted_avg | round(2) }}</span>
+            {% else %}
+                <span class="stats-row-value text-green">Not Needed</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- PAST WEEKS -->
+    {% if weekly_spending_list %}
+    <div class="card">
+        <h2>Past Weeks</h2>
+        <ul class="week-list">
+            {% for spent in weekly_spending_list %}
+            <li>
+                <span class="week-label">Week {{ loop.index }}</span>
+                <span>${{ spent }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- CHARTS -->
     {% if bar_chart_img %}
-        <h3>Weekly Spending Bar Chart</h3>
-        <img src="data:image/png;base64,{{ bar_chart_img }}" alt="Weekly Spending Bar Chart">
+    <div class="card">
+        <h2>Weekly Spending</h2>
+        <div class="chart-container">
+            <img src="data:image/png;base64,{{ bar_chart_img }}" alt="Weekly Spending Bar Chart">
+        </div>
+    </div>
     {% endif %}
+
     {% if pie_chart_img %}
-        <h3>Spending Pie Chart</h3>
-        <img src="data:image/png;base64,{{ pie_chart_img }}" alt="Spending Pie Chart">
+    <div class="card">
+        <h2>Spending Breakdown</h2>
+        <div class="chart-container">
+            <img src="data:image/png;base64,{{ pie_chart_img }}" alt="Spending Pie Chart">
+        </div>
+    </div>
     {% endif %}
-{% endif %}
+
+    {% endif %}
+
+</div>
 </body>
 </html>
