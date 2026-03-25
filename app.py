@@ -16,7 +16,18 @@ FILENAME = "savings_made_simple.csv"
 # -----------------------
 # GLOBAL COLOR PALETTE (same for pie + bar)
 # -----------------------
-COLORS = list(plt.cm.Pastel1.colors)
+COLORS = [
+    '#6c63ff',  # purple (primary)
+    '#00d4ff',  # cyan
+    '#ff6b9d',  # pink
+    '#00ff88',  # green
+    '#ffb347',  # orange
+    '#ff4d4d',  # red
+    '#a78bfa',  # lavender
+    '#34d399',  # mint
+    '#f59e0b',  # amber
+    '#60a5fa',  # blue
+]
 
 
 # -----------------------
@@ -25,20 +36,22 @@ COLORS = list(plt.cm.Pastel1.colors)
 def plot_bar_chart(weeks, amounts):
     fig, ax = plt.subplots()
 
-    # Match colors to pie chart
-    bar_colors = COLORS[:len(weeks)]
+    fig.patch.set_facecolor('#1a1a1a')
+    ax.set_facecolor('#111111')
 
+    bar_colors = COLORS[:len(weeks)]
     ax.bar(weeks, amounts, color=bar_colors)
 
-    # Force whole-number ticks
     ax.set_xticks(range(1, len(weeks) + 1))
-
-    ax.set_xlabel("Week")
-    ax.set_ylabel("Amount Spent")
-    ax.set_title("Weekly Spending")
+    ax.set_xlabel("Week", color='#888888')
+    ax.set_ylabel("Amount Spent", color='#888888')
+    ax.set_title("Weekly Spending", color='#ffffff')
+    ax.tick_params(colors='#888888')
+    for spine in ax.spines.values():
+        spine.set_edgecolor('#333333')
 
     buffer = BytesIO()
-    plt.savefig(buffer, format="png")
+    plt.savefig(buffer, format="png", facecolor=fig.get_facecolor())
     buffer.seek(0)
     image = base64.b64encode(buffer.getvalue()).decode("utf-8")
     plt.close(fig)
@@ -66,18 +79,23 @@ def plot_pie_chart(weekly_spending_list, money_left):
         colors.append("red")
 
     fig, ax = plt.subplots()
+
+    fig.patch.set_facecolor('#1a1a1a')
+    ax.set_facecolor('#1a1a1a')
+
     ax.pie(
         values,
         labels=None,
         autopct=lambda pct: f"${pct/100*sum(values):.2f}",
         startangle=90,
-        colors=colors
+        colors=colors,
+        textprops={'color': '#ffffff'}
     )
 
-    ax.set_title("Spending Breakdown")
+    ax.set_title("Spending Breakdown", color='#ffffff')
 
     buffer = BytesIO()
-    plt.savefig(buffer, format="png")
+    plt.savefig(buffer, format="png", facecolor=fig.get_facecolor())
     buffer.seek(0)
     image = base64.b64encode(buffer.getvalue()).decode("utf-8")
     plt.close(fig)
